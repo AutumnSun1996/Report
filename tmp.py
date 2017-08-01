@@ -1,8 +1,13 @@
 import numpy as np
 from sklearn.metrics.scorer import mean_absolute_error
 from hyperopt import fmin, tpe, hp, Trials
-from skopt import gp_minimize
+from skopt import gp_minimize, gbrt_minimize, dummy_minimize, forest_minimize
 from skopt.benchmarks import branin as benchmark_func
+from skopt.plots import plot_convergence
+import matplotlib.pyplot as plt
+from matplotlib.pyplot import cm
+from matplotlib.ticker import LogLocator
+from matplotlib.ticker import MaxNLocator
 """Branin-Hoo function is defined on the square x1 ∈ [-5, 10], x2 ∈ [0, 15].
 
 It has three minima with f(x*) = 0.397887 at x* = (-pi, 12.275),
@@ -10,7 +15,7 @@ It has three minima with f(x*) = 0.397887 at x* = (-pi, 12.275),
 
 More details: <http://www.sfu.ca/~ssurjano/branin.html>
 """
-
+plt.gca()
 space = {}
 for x in range(6):
     name = 'x{}'.format(x)
