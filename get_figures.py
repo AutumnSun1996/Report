@@ -43,19 +43,21 @@ def plot_results(*methods, true_minimum=None, max_n_calls=np.inf, choice='x_erro
     ax.legend(loc="best")
     return ax
 
-idx = 0
-names = sorted(os.listdir('tmp'))
-print(names[idx])
-with open('pkl/{}'.format(names[idx]), 'rb') as fl:
-    data = pickle.load(fl)
-print(data['setting'])
 
-true_minimum = benchmarks[data['setting']['benchmark']]['y']
-plt.show(plot_results(*data['data'], true_minimum=true_minimum, max_n_calls=100, choice='y_output'))
-plt.show(plot_results(*data['data'], true_minimum=0., max_n_calls=100, choice='x_error'))
-# plt.show(plot_results(*data['data'], true_minimum=true_minimum, choice='y_output', x_mark='time', target_time=2, max_time=1000))
-# plt.show(plot_results(*data['data'], choice='x_error', x_mark='time', target_time=5, max_time=1000))
+if __name__ == '__main__':
+    idx = 0
+    names = sorted(os.listdir('tmp'))
+    print(names[idx])
+    with open('pkl/{}'.format(names[idx]), 'rb') as fl:
+        data = pickle.load(fl)
+    print(data['setting'])
+
+    true_minimum = benchmarks[data['setting']['benchmark']]['y']
+    plt.show(plot_results(*data['data'], true_minimum=true_minimum, max_n_calls=100, choice='y_output'))
+    plt.show(plot_results(*data['data'], true_minimum=0., max_n_calls=100, choice='x_error'))
+    # plt.show(plot_results(*data['data'], true_minimum=true_minimum, choice='y_output', x_mark='time', target_time=2, max_time=1000))
+    # plt.show(plot_results(*data['data'], choice='x_error', x_mark='time', target_time=5, max_time=1000))
 
 
-# plt.show(plot_results(data['data'][3], data['data'][0], choice='y_true', x_mark='time', target_time=1, max_time=200))
-# plt.show(plot_results(data['data'][3], data['data'][0], choice='x_error', x_mark='time', target_time=1, max_time=200))
+    # plt.show(plot_results(data['data'][3], data['data'][0], choice='y_true', x_mark='time', target_time=1, max_time=200))
+    # plt.show(plot_results(data['data'][3], data['data'][0], choice='x_error', x_mark='time', target_time=1, max_time=200))
