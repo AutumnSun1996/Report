@@ -46,7 +46,7 @@ def plot_results(*methods, true_minimum=None, max_n_calls=np.inf, choice='x_erro
 
 if __name__ == '__main__':
     idx = 0
-    names = sorted(os.listdir('tmp'))
+    names = sorted(os.listdir('pkl'))
     print(names[idx])
     with open('pkl/{}'.format(names[idx]), 'rb') as fl:
         data = pickle.load(fl)
