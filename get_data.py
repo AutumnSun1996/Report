@@ -1,3 +1,4 @@
+import os
 import pickle
 from datetime import datetime
 
@@ -94,15 +95,8 @@ class Target:
     def final_score(self):
         return self.target(self.x, 0)
 
-if __name__ == '__main__':
 
-    setting = dict(
-        error_level=0.05,
-        benchmark='hart6'
-    )
-    rseed = 4
-    n_calls = 100
-    print(rseed)
+def run(error_level=0.05, benchmark='hart6', rseed=5, n_calls=100):
     methods = [
         {'name': 'BaysionOptimize', 'func': skopt.gp_minimize,
          'kwargs': {'n_calls': n_calls, 'random_state': rseed}},
@@ -116,13 +110,30 @@ if __name__ == '__main__':
          'kwargs': {'n_calls': n_calls, 'random_state': rseed}}
     ]
     for m in methods:
-        t = Target(**setting, name=m['name'])
+        t = Target(error_level=error_level, benchmark=benchmark, name=m['name'])
         m['result'] = t
         m['func'](t.target, t.get_space(), **m['kwargs'])
-
-    with open('pkl/Compare{}.pkl'.format(datetime.now()), 'wb') as fl:
+    idx = 0
+    name = 'pkl/Compare-{}-{}-{}.pkl'.format(benchmark, error_level, rseed)
+    while os.path.exists(name):
+        name = 'pkl/Compare-{}-{}-{}-{}.pkl'.format(benchmark, error_level, rseed, idx)
+        idx += 1
+    with open(name, 'wb') as fl:
         pickle.dump({
             'name': 'Compare Result',
-            'setting': setting,
+            'setting': {
+                'error_level': error_level,
+                'benchmark': benchmark,
+                'rseed': rseed,
+                'n_calls': n_calls,
+            },
             'data': methods,
         }, fl)
+
+
+if __name__ == '__main__':
+    for bench in ('hart6', 'branin'):
+        for err in (0, 0.01, 0.1):
+            for i in range(5):
+                print('Run', bench, err, i)
+                run(error_level=err, rseed=i, benchmark=bench)
